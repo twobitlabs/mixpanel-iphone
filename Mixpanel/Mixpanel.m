@@ -243,7 +243,10 @@ static Mixpanel *sharedInstance = nil;
 
 static __unused NSString *MPURLEncode(NSString *s)
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)s, NULL, CFSTR("!*'();:@&=+$,/?%#[]"), kCFStringEncodingUTF8));
+#pragma clang diagnostic pop
 }
 
 - (NSData *)JSONSerializeObject:(id)obj
@@ -312,11 +315,14 @@ static __unused NSString *MPURLEncode(NSString *s)
     NSData *data = [self JSONSerializeObject:array];
     if (data) {
         b64String = [data mp_base64EncodedString];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         b64String = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                                 (__bridge CFStringRef)b64String,
                                                                 NULL,
                                                                 CFSTR("!*'();:@&=+$,/?%#[]"),
                                                                 kCFStringEncodingUTF8));
+#pragma clang diagnostic pop
     }
     return b64String;
 }
@@ -679,7 +685,10 @@ static __unused NSString *MPURLEncode(NSString *s)
         [self updateNetworkActivityIndicator:YES];
         
         NSHTTPURLResponse *urlResponse = nil;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
+#pragma clang diagnostic pop
 
         [self updateNetworkActivityIndicator:NO];
         
@@ -1331,7 +1340,10 @@ static void MixpanelReachabilityCallback(SCNetworkReachabilityRef target, SCNetw
             [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
             NSError *error = nil;
             NSURLResponse *urlResponse = nil;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&error];
+#pragma clang diagnostic pop
             if (error) {
                 MixpanelError(@"%@ decide check http error: %@", self, error);
                 return;
@@ -1543,11 +1555,14 @@ static void MixpanelReachabilityCallback(SCNetworkReachabilityRef target, SCNetw
                     } else
 #endif
                     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"We'd love your feedback!"
                                                                         message:@"Mind taking a quick survey?"
                                                                        delegate:self
                                                               cancelButtonTitle:@"No, Thanks"
                                                               otherButtonTitles:@"Sure", nil];
+#pragma clang diagnostic pop
                         [alert show];
                     }
                 } else {
@@ -1623,6 +1638,8 @@ static void MixpanelReachabilityCallback(SCNetworkReachabilityRef target, SCNetw
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (_currentlyShowingSurvey) {
@@ -1634,6 +1651,7 @@ static void MixpanelReachabilityCallback(SCNetworkReachabilityRef target, SCNetw
         }
     }
 }
+#pragma clang diagnostic pop
 
 #pragma mark - Mixpanel Notifications
 

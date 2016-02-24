@@ -76,7 +76,10 @@ NSString *const MPNotificationTypeTakeover = @"takeover";
             return nil;
         }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         NSString *escapedUrl = [imageURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+#pragma clang diagnostic pop
         imageURL = [NSURL URLWithString:escapedUrl];
         if (imageURL == nil) {
             MixpanelError(@"invalid notif image URL: %@", imageURLString);
@@ -90,8 +93,11 @@ NSString *const MPNotificationTypeTakeover = @"takeover";
             imagePath = [[imageName stringByAppendingString:@"@2x"] stringByAppendingPathExtension:extension];
         }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         imagePath = [imagePath stringByAddingPercentEscapesUsingEncoding:NSStringEncodingConversionExternalRepresentation];
         imageURL = [[NSURL alloc] initWithScheme:imageURL.scheme host:imageURL.host path:imagePath];
+#pragma clang diagnostic pop
 
         if (imageURL == nil) {
             MixpanelError(@"invalid notif image URL: %@", imageURLString);
